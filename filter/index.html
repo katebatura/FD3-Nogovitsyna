@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html> 
+<html> 
+<head> 
+  <meta charset="utf-8" />
+  <title>filter</title>
+</head> 
+<body> 
+  <div id="container"></div> 
+      
+  <script src="https://unpkg.com/react@15/dist/react.js"></script> 
+  <script src="https://unpkg.com/react-dom@15/dist/react-dom.js"></script> 
+      
+  <script src="Filter.js"></script>
+
+  <script>
+
+    var wordsArr = [ 
+      {name: 'предшествовавшими', key: 1}, {name: 'воспользовавшемуся', key: 2}, {name: 'участвовавшими', key: 3},
+      {name: 'усовершенствованиями', key: 4}, {name: 'государственного', key: 5}, {name: 'покровительствовавшие', key: 6},
+      {name: 'облагодетельствованные', key: 7}, {name: 'нововодолашского', key: 8}, {name: 'беспрецедентный', key: 9} , 
+      {name: 'мелкокалиберными', key: 10} , {name: 'апелляционным', key: 11} , {name: 'компрометирующий', key: 12} ,
+      {name: 'трансформируемый', key: 13} , {name: 'дифференцированная', key: 14} , {name: 'экзальтированность', key: 15} 
+    ];
+
+    ReactDOM.render(
+      React.createElement( Filter, {words: wordsArr} ), 
+      document.getElementById('container') 
+    );
+
+  </script>
+
+</body> 
+</html>
