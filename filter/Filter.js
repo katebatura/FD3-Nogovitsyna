@@ -16,10 +16,8 @@ var Filter = React.createClass({
         };
       },
 
-    sortWords: function() {
-        this.state.selectedCheckbox ? 
-        this.setState( {selectedCheckbox: false}, this.processWords ) :
-        this.setState( {selectedCheckbox: true}, this.processWords );
+    sortWords: function(e) {
+        this.setState( {selectedCheckbox: e.target.checked}, this.processWords ) 
     },
 
     filterWords: function(e) {
@@ -48,7 +46,7 @@ var Filter = React.createClass({
 
         return React.DOM.div( null, 
             React.DOM.div(null, 
-                React.DOM.input( {type: 'checkbox', onClick: this.sortWords} ),
+                React.DOM.input( {type: 'checkbox', onClick: this.sortWords, defaultChecked: false} ),
                 React.DOM.input( {type: 'text', onChange: this.filterWords} )
             ),            
             React.DOM.select( {multiple: true, size: '10'}, optionsGroup )
