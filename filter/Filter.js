@@ -27,13 +27,14 @@ var Filter = React.createClass({
     processWords: function() {
         let wordsArr = this.props.words.slice();
 
+        if(this.state.freeText) {
+            wordsArr = wordsArr.filter( v => v.indexOf(this.state.freeText) != -1 );
+        }
+        
         if(this.state.selectedCheckbox) {
             wordsArr.sort();
         }
 
-        if(this.state.freeText) {
-            wordsArr = wordsArr.filter( v => v.indexOf(this.state.freeText) != -1 );
-        }
 
         this.setState( {wordsArr: wordsArr} );
     },
