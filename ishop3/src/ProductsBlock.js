@@ -1,0 +1,49 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import DOM from 'react-dom-factories';
+
+import './ProductsBlock.css';
+
+class ProductsBlock extends React.Component {
+
+    static propTypes =  {
+        code: PropTypes.number.isRequired,
+        productCount: PropTypes.number.isRequired,
+        productPrice: PropTypes.number.isRequired,
+        productName: PropTypes.string.isRequired,
+        productPhoto: PropTypes.string.isRequired,
+        selectedProduct: PropTypes.number,
+        cbSelectProduct: PropTypes.func.isRequired,
+        cbDeleteProduct: PropTypes.func.isRequired,
+    };
+
+    selectItem = () => {
+        (this.props.code == this.props.selectedProduct) ?
+        this.props.cbSelectProduct(null) :
+        this.props.cbSelectProduct(this.props.code);
+    };
+
+    deleteItem = () => {
+        this.props.cbDeleteProduct(this.props.code);
+    };
+
+    render() {
+        return (
+            <tr className = { (this.props.selectedProduct == this.props.code) ? 'selected' : null }>
+                <td onClick = {this.selectItem}> {this.props.productName} </td>
+                <td onClick = {this.selectItem}> {this.props.productPrice}  руб.</td>
+                <td onClick = {this.selectItem}>
+                    <img src = {this.props.productPhoto} className = 'productPhoto' />
+                </td>
+                <td onClick = {this.selectItem}> {this.props.productCount} </td>
+                <td> 
+                    <button onClick = {this.deleteItem}>Delete</button>
+                </td>
+            </tr>
+        )        
+        
+    };
+
+};
+
+export default ProductsBlock;
