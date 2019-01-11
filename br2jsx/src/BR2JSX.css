@@ -1,0 +1,6 @@
+.text {
+    display: inline-block;
+    background-color: darkgray;
+    color: white;
+    padding: 10px;
+}

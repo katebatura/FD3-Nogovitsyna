@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DOM from 'react-dom-factories';
 
 import './ProductsBlock.css';
 
@@ -32,9 +31,7 @@ class ProductsBlock extends React.Component {
             <tr className = { (this.props.selectedProduct == this.props.code) ? 'selected' : null }>
                 <td onClick = {this.selectItem}> {this.props.productName} </td>
                 <td onClick = {this.selectItem}> {this.props.productPrice}  руб.</td>
-                <td onClick = {this.selectItem}>
-                    <img src = {this.props.productPhoto} className = 'productPhoto' />
-                </td>
+                <td onClick = {this.selectItem}> {this.props.productPhoto} </td>
                 <td onClick = {this.selectItem}> {this.props.productCount} </td>
                 <td> 
                     <button onClick = {this.deleteItem}>Delete</button>

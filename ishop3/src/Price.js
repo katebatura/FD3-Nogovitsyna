@@ -38,7 +38,7 @@ class Price extends React.Component {
         let productsCode = this.state.productsArr.map( v => 
             <ProductsBlock key = {v.code} productName = {v.productName} 
             productCount = {v.productCount} productPrice = {v.productPrice} 
-            productPhoto = {v.productPhotov.productPhoto}
+            productPhoto = {v.productPhoto}
             code = {v.code} selectedProduct = {this.state.selectedProduct} 
             cbSelectProduct = {this.SelectProduct}
             cbDeleteProduct = {this.DeleteProduct} />

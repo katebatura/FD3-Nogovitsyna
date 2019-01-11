@@ -1,0 +1,30 @@
+.products {
+    margin: auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+    width: 900px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 18px;
+    text-align: center;
+    vertical-align: center;
+    padding: 10px;
+}
+
+th {
+    border: 1px solid black;
+}.productPhoto{
+    width: 150px;
+    margin: 40px 20px;
+}
+
+td {
+    border: 1px solid black;
+}
+
+.selected {
+    background-color:gray;
+}.shopName {
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+/*# sourceMappingURL=bundle.css.map*/
