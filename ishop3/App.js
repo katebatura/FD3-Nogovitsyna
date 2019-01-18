@@ -12,6 +12,7 @@ let productsArr = require('./products.json');
 ReactDOM.render(
     <Price shopName = {name}
     products = {productsArr}
+    workMode = {0}
     />, 
     document.getElementById('container') 
 );

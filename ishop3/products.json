@@ -1,8 +1,8 @@
 [ 
-    { "productName": "Набор ёлочных игрушек", "code": 1, "productCount": 52, "productPrice": 12.50, "productPhoto": "./images/1.jpeg" }, 
-    { "productName": "Подвеска новогодняя", "code": 2 , "productCount": 12, "productPrice": 6.80, "productPhoto": "./images/2.jpeg" }, 
-    { "productName": "Фигура под ёлку 'Дед Мороз на лыжах'", "code": 3, "productCount": 44, "productPrice": 24.66, "productPhoto": "./images/3.jpeg" },
-    { "productName": "Венок Зимнее волшебство", "code": 4, "productCount": 17, "productPrice": 34.48, "productPhoto": "./images/4.jpeg" }, 
-    { "productName": "Елочная игрушка 'Олененок'", "code": 5 , "productCount": 35, "productPrice": 10.20, "productPhoto": "./images/5.jpeg" }, 
-    { "productName": "Подвеска новогодняя Совушка", "code": 6, "productCount": 60, "productPrice": 8.09, "productPhoto": "./images/6.jpeg" }  
+    { "productName": "Набор ёлочных игрушек", "code": 1, "productCount": 52, "productPrice": 12.50, "productPhoto": "https://27.ua/shop/shary-novogodnie/" }, 
+    { "productName": "Подвеска новогодняя", "code": 2 , "productCount": 12, "productPrice": 6.80, "productPhoto": "https://89.ua/shop/shary-novogodnie/" }, 
+    { "productName": "Фигура под ёлку 'Дед Мороз на лыжах'", "code": 3, "productCount": 44, "productPrice": 24.66, "productPhoto": "https://01.ua/shop/shary-novogodnie/" },
+    { "productName": "Венок Зимнее волшебство", "code": 4, "productCount": 17, "productPrice": 34.48, "productPhoto": "https://78.ua/shop/shary-novogodnie/" }, 
+    { "productName": "Елочная игрушка 'Олененок'", "code": 5 , "productCount": 35, "productPrice": 10.20, "productPhoto": "https://35.ua/shop/shary-novogodnie/" }, 
+    { "productName": "Подвеска новогодняя Совушка", "code": 6, "productCount": 60, "productPrice": 8.09, "productPhoto": "https://12.ua/shop/shary-novogodnie/" }  
   ]

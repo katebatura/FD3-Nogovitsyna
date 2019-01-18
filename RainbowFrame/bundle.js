@@ -24215,13 +24215,12 @@ var RainbowFrame = function (_React$Component) {
         key: 'render',
         value: function render() {
 
-            var arr = [_react2.default.createElement(
+            var text = _react2.default.createElement(
                 'div',
                 { style: { border: "solid 8px " + this.props.colors[0], padding: "5px", display: "inline-block" },
                     key: 0 },
                 this.props.children
-            )];
-            var text = arr[0];
+            );
             for (var i = 1; i < this.props.colors.length; i++) {
                 text = _react2.default.createElement(
                     'div',
@@ -24229,13 +24228,12 @@ var RainbowFrame = function (_React$Component) {
                         key: i },
                     text
                 );
-                arr[0] = text;
             }
 
             return _react2.default.createElement(
                 'div',
                 null,
-                arr
+                text
             );
         }
     }]);

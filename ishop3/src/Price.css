@@ -1,10 +1,9 @@
 .products {
-    margin: auto;
     border: 1px solid black;
     border-collapse: collapse;
     width: 900px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     text-align: center;
     vertical-align: center;
     padding: 10px;

@@ -12,19 +12,17 @@ class RainbowFrame extends React.Component {
 
     render() {
 
-        let arr = [<div style = { {border:"solid 8px " + this.props.colors[0], padding: "5px", display: "inline-block"} }
-              key = {0}>{this.props.children}</div>];
-        let text = arr[0];
+        let text = <div style = { {border:"solid 8px " + this.props.colors[0], padding: "5px", display: "inline-block"} }
+              key = {0}>{this.props.children}</div>;
         for (let i = 1; i < this.props.colors.length; i++){            
             text = <div style = { {border:"solid 8px " + this.props.colors[i] , padding: "5px", display: "inline-block"} } 
                 key = {i} >{text}</div>;
-            arr[0] = text;
         }
 
         
         return (
             <div>           
-                {arr}
+                {text}
             </div>
           );
     };
