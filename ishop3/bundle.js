@@ -272,6 +272,41 @@ if (process.env.NODE_ENV === 'production') {
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
+/* WEBPACK VAR INJECTION */(function(process) {/**
+ * Copyright (c) 2013-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+if (process.env.NODE_ENV !== 'production') {
+  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
+    Symbol.for &&
+    Symbol.for('react.element')) ||
+    0xeac7;
+
+  var isValidElement = function(object) {
+    return typeof object === 'object' &&
+      object !== null &&
+      object.$$typeof === REACT_ELEMENT_TYPE;
+  };
+
+  // By explicitly using `prop-types` you are opting into new development behavior.
+  // http://fb.me/prop-types-in-prod
+  var throwOnDirectAccess = true;
+  module.exports = __webpack_require__(21)(isValidElement, throwOnDirectAccess);
+} else {
+  // By explicitly using `prop-types` you are opting into new production behavior.
+  // http://fb.me/prop-types-in-prod
+  module.exports = __webpack_require__(23)();
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -285,7 +320,7 @@ if (process.env.NODE_ENV === 'production') {
 var printWarning = function() {};
 
 if (process.env.NODE_ENV !== 'production') {
-  var ReactPropTypesSecret = __webpack_require__(3);
+  var ReactPropTypesSecret = __webpack_require__(4);
   var loggedTypeFailures = {};
 
   printWarning = function(text) {
@@ -368,7 +403,7 @@ module.exports = checkPropTypes;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -385,41 +420,6 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(process) {/**
- * Copyright (c) 2013-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-if (process.env.NODE_ENV !== 'production') {
-  var REACT_ELEMENT_TYPE = (typeof Symbol === 'function' &&
-    Symbol.for &&
-    Symbol.for('react.element')) ||
-    0xeac7;
-
-  var isValidElement = function(object) {
-    return typeof object === 'object' &&
-      object !== null &&
-      object.$$typeof === REACT_ELEMENT_TYPE;
-  };
-
-  // By explicitly using `prop-types` you are opting into new development behavior.
-  // http://fb.me/prop-types-in-prod
-  var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(21)(isValidElement, throwOnDirectAccess);
-} else {
-  // By explicitly using `prop-types` you are opting into new production behavior.
-  // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(23)();
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 /* 5 */
@@ -680,10 +680,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var name = 'Новогодние товары';
 
-var productsArr = __webpack_require__(29);
+var productsArr = __webpack_require__(31);
 
 _reactDom2.default.render(_react2.default.createElement(_Price2.default, { shopName: name,
-    products: productsArr
+    products: productsArr,
+    workMode: 0
 }), document.getElementById('container'));
 
 /***/ }),
@@ -740,7 +741,7 @@ if (process.env.NODE_ENV !== "production") {
 'use strict';
 
 var _assign = __webpack_require__(5);
-var checkPropTypes = __webpack_require__(2);
+var checkPropTypes = __webpack_require__(3);
 
 // TODO: this is special because it gets imported during build.
 
@@ -3674,7 +3675,7 @@ if (process.env.NODE_ENV !== "production") {
 
 var React = __webpack_require__(1);
 var _assign = __webpack_require__(6);
-var checkPropTypes = __webpack_require__(2);
+var checkPropTypes = __webpack_require__(3);
 var scheduler = __webpack_require__(7);
 var tracing = __webpack_require__(17);
 
@@ -24223,7 +24224,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(4);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -24237,7 +24238,13 @@ var _shopName = __webpack_require__(27);
 
 var _shopName2 = _interopRequireDefault(_shopName);
 
+var _card = __webpack_require__(29);
+
+var _card2 = _interopRequireDefault(_card);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24261,15 +24268,73 @@ var Price = function (_React$Component) {
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Price.__proto__ || Object.getPrototypeOf(Price)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             productsArr: _this.props.products,
-            selectedProduct: null
-        }, _this.SelectProduct = function (item) {
-            _this.setState({ selectedProduct: item });
-        }, _this.DeleteProduct = function (item) {
+            selectedProduct: null,
+            workMode: _this.props.workMode,
+            selectedProductName: null,
+            selectedProductPrice: null,
+            selectedProductPhoto: null,
+            selectedProductCount: null
+        }, _this.selectProduct = function (item, name, price, url, count) {
+            if (_this.state.workMode == 2 || _this.state.workMode == 3) return;
+
+            _this.setState({ selectedProduct: item, selectedProductName: name,
+                selectedProductPrice: price, selectedProductPhoto: url,
+                selectedProductCount: count, workMode: item ? 1 : 0 });
+        }, _this.deleteProduct = function (item) {
             _this.setState(function (currState, props) {
                 return { productsArr: currState.productsArr.filter(function (v) {
                         return v.code != item;
                     }) };
             });
+            if (_this.state.selectedProduct == item) {
+                _this.setState({ workMode: 0 });
+            }
+        }, _this.editProduct = function (item, name, price, url, count) {
+            _this.setState({ selectedProduct: item, selectedProductName: name,
+                selectedProductPrice: price, selectedProductPhoto: url,
+                selectedProductCount: count, workMode: 2 });
+        }, _this.cancelChanges = function () {
+            _this.setState({ workMode: 1 });
+        }, _this.saveChanges = function (item, name, price, url, count) {
+            if (!item) {
+                item = _this.state.productsArr.length + 1;
+            }
+
+            var newArr;
+
+            if (_this.state.productsArr.some(function (v) {
+                return v.code == item;
+            })) {
+                newArr = _this.state.productsArr.map(function (v) {
+                    if (v.code == item) {
+                        return v = {
+                            code: item,
+                            productName: name,
+                            productPrice: +price,
+                            productPhoto: url,
+                            productCount: +count };
+                    } else {
+                        return v;
+                    }
+                });
+            } else {
+                newArr = [].concat(_toConsumableArray(_this.state.productsArr), [{
+                    code: item,
+                    productName: name,
+                    productPrice: +price,
+                    productPhoto: url,
+                    productCount: +count }]);
+            }
+
+            _this.setState({ productsArr: newArr });
+
+            _this.setState({ selectedProduct: item, selectedProductName: name,
+                selectedProductPrice: +price, selectedProductPhoto: url,
+                selectedProductCount: +count, workMode: 1 });
+        }, _this.createItem = function () {
+            _this.setState({ workMode: 3, selectedProduct: null,
+                selectedProductName: null, selectedProductPrice: null, selectedProductPhoto: null,
+                selectedProductCount: null });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -24283,8 +24348,9 @@ var Price = function (_React$Component) {
                     productCount: v.productCount, productPrice: v.productPrice,
                     productPhoto: v.productPhoto,
                     code: v.code, selectedProduct: _this2.state.selectedProduct,
-                    cbSelectProduct: _this2.SelectProduct,
-                    cbDeleteProduct: _this2.DeleteProduct });
+                    cbSelectProduct: _this2.selectProduct,
+                    cbEditProduct: _this2.editProduct,
+                    cbDeleteProduct: _this2.deleteProduct });
             });
 
             return _react2.default.createElement(
@@ -24323,12 +24389,30 @@ var Price = function (_React$Component) {
                             _react2.default.createElement(
                                 'th',
                                 null,
+                                'Edit'
+                            ),
+                            _react2.default.createElement(
+                                'th',
+                                null,
                                 'Delete'
                             )
                         ),
                         productsCode
                     )
-                )
+                ),
+                _react2.default.createElement(
+                    'button',
+                    { onClick: this.createItem, style: { margin: "30px" } },
+                    'New Product'
+                ),
+                this.state.workMode ? _react2.default.createElement(_card2.default, { workMode: this.state.workMode,
+                    selectedProduct: this.state.selectedProduct,
+                    selectedProductName: this.state.selectedProductName,
+                    selectedProductPrice: this.state.selectedProductPrice,
+                    selectedProductPhoto: this.state.selectedProductPhoto,
+                    selectedProductCount: this.state.selectedProductCount,
+                    cbCancelChanges: this.cancelChanges,
+                    cbSaveChanges: this.saveChanges }) : null
             );
         }
     }]);
@@ -24344,7 +24428,8 @@ Price.propTypes = {
         productName: _propTypes2.default.string.isRequired,
         productPrice: _propTypes2.default.number.isRequired,
         productPhoto: _propTypes2.default.string.isRequired
-    }))
+    })),
+    workMode: _propTypes2.default.number.isRequired // 0-начальное состояние, 1-режим просмотра, 2-режим редактирования, 3-создание нового продукта
 };
 ;
 
@@ -24366,8 +24451,8 @@ exports.default = Price;
 
 var assign = __webpack_require__(22);
 
-var ReactPropTypesSecret = __webpack_require__(3);
-var checkPropTypes = __webpack_require__(2);
+var ReactPropTypesSecret = __webpack_require__(4);
+var checkPropTypes = __webpack_require__(3);
 
 var printWarning = function() {};
 
@@ -25024,7 +25109,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 
-var ReactPropTypesSecret = __webpack_require__(3);
+var ReactPropTypesSecret = __webpack_require__(4);
 
 function emptyFunction() {}
 
@@ -25099,7 +25184,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(4);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -25128,7 +25213,9 @@ var ProductsBlock = function (_React$Component) {
         }
 
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ProductsBlock.__proto__ || Object.getPrototypeOf(ProductsBlock)).call.apply(_ref, [this].concat(args))), _this), _this.selectItem = function () {
-            _this.props.code == _this.props.selectedProduct ? _this.props.cbSelectProduct(null) : _this.props.cbSelectProduct(_this.props.code);
+            _this.props.code == _this.props.selectedProduct ? _this.props.cbSelectProduct(null) : _this.props.cbSelectProduct(_this.props.code, _this.props.productName, _this.props.productPrice, _this.props.productPhoto, _this.props.productCount);
+        }, _this.editItem = function () {
+            _this.props.cbEditProduct(_this.props.code, _this.props.productName, _this.props.productPrice, _this.props.productPhoto, _this.props.productCount);
         }, _this.deleteItem = function () {
             _this.props.cbDeleteProduct(_this.props.code);
         }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -25157,7 +25244,9 @@ var ProductsBlock = function (_React$Component) {
                 _react2.default.createElement(
                     'td',
                     { onClick: this.selectItem },
-                    _react2.default.createElement('img', { src: this.props.productPhoto, className: 'productPhoto' })
+                    ' ',
+                    this.props.productPhoto,
+                    ' '
                 ),
                 _react2.default.createElement(
                     'td',
@@ -25165,6 +25254,15 @@ var ProductsBlock = function (_React$Component) {
                     ' ',
                     this.props.productCount,
                     ' '
+                ),
+                _react2.default.createElement(
+                    'td',
+                    null,
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.editItem },
+                        'Edit'
+                    )
                 ),
                 _react2.default.createElement(
                     'td',
@@ -25190,6 +25288,7 @@ ProductsBlock.propTypes = {
     productPhoto: _propTypes2.default.string.isRequired,
     selectedProduct: _propTypes2.default.number,
     cbSelectProduct: _propTypes2.default.func.isRequired,
+    cbEditProduct: _propTypes2.default.func.isRequired,
     cbDeleteProduct: _propTypes2.default.func.isRequired
 };
 ;
@@ -25219,7 +25318,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(4);
+var _propTypes = __webpack_require__(2);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
@@ -25271,9 +25370,247 @@ exports.default = ShopName;
 
 /***/ }),
 /* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(2);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+__webpack_require__(30);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Card = function (_React$Component) {
+    _inherits(Card, _React$Component);
+
+    function Card() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, Card);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Card.__proto__ || Object.getPrototypeOf(Card)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            name: _this.props.selectedProductName || '',
+            price: _this.props.selectedProductPrice || '',
+            url: _this.props.selectedProductPhoto || '',
+            count: _this.props.selectedProductCount || '',
+            errorName: false,
+            errorPrice: false,
+            errorUrl: false,
+            errorQuantity: false
+
+        }, _this.changeName = function (e) {
+            _this.setState({ name: e.target.value, errorName: false });
+        }, _this.changePrice = function (e) {
+            _this.setState({ price: e.target.value, errorPrice: false });
+        }, _this.changeUrl = function (e) {
+            _this.setState({ url: e.target.value, errorUrl: false });
+        }, _this.changeQuantity = function (e) {
+            _this.setState({ count: e.target.value, errorQuantity: false });
+        }, _this.saveChanges = function () {
+            _this.props.cbSaveChanges(_this.props.selectedProduct, _this.state.name, _this.state.price, _this.state.url, _this.state.count);
+        }, _this.cancelChanges = function () {
+            _this.props.cbCancelChanges();
+        }, _this.checkName = function () {
+            if (!_this.state.name || typeof _this.state.name != 'string') {
+                _this.setState({ errorName: true });
+            }
+        }, _this.checkPrice = function () {
+            var price = parseFloat(_this.state.price);
+            if (!_this.state.price || isNaN(price) || price <= 0) {
+                _this.setState({ errorPrice: true });
+            }
+        }, _this.checkUrl = function () {
+            var valid = /^(ftp|http|https):\/\/[^ "]+$/.test(_this.state.url);
+            if (!valid) {
+                _this.setState({ errorUrl: true });
+            }
+        }, _this.checkQuantity = function () {
+            var count = parseFloat(_this.state.count);
+            if (!_this.state.count || isNaN(count) || parseInt(_this.state.count) != count || count < 0) {
+                _this.setState({ errorQuantity: true });
+            }
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(Card, [{
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(newProps) {
+            //при нажатии редактирования у др продукта изменяем стейт на новые пропсы
+            this.setState({ name: newProps.selectedProductName || '', price: newProps.selectedProductPrice || '',
+                url: newProps.selectedProductPhoto || '', count: newProps.selectedProductCount || '', errorName: false,
+                errorPrice: false, errorUrl: false, errorQuantity: false });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            if (this.props.workMode == 1) {
+                //в режиме просмотра
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'h3',
+                        null,
+                        ' ',
+                        this.props.selectedProductName,
+                        ' '
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        ' ',
+                        _react2.default.createElement(
+                            'b',
+                            null,
+                            'Price'
+                        ),
+                        ' ',
+                        this.props.selectedProductPrice,
+                        ' '
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        ' ',
+                        this.props.selectedProductCount > 0 ? "В наличии" : "Нет в наличии",
+                        ' '
+                    )
+                );
+            } else {
+                return (//в режиме редактирования
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        _react2.default.createElement(
+                            'h3',
+                            null,
+                            ' Edit existing product '
+                        ),
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            'Name: ',
+                            _react2.default.createElement('input', { value: this.state.name, onChange: this.changeName, onBlur: this.checkName }),
+                            ' '
+                        ),
+                        _react2.default.createElement(
+                            'span',
+                            { className: this.state.errorName ? "visible" : "invisible" },
+                            'Please, fill the field. Value must be a string'
+                        ),
+                        ' ',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            'Price: ',
+                            _react2.default.createElement('input', { value: this.state.price, onChange: this.changePrice, onBlur: this.checkPrice }),
+                            ' '
+                        ),
+                        _react2.default.createElement(
+                            'span',
+                            { className: this.state.errorPrice ? "visible" : "invisible" },
+                            'Please, fill the field. Value must be a rational number greater than 0'
+                        ),
+                        ' ',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            'Url: ',
+                            _react2.default.createElement('input', { value: this.state.url, onChange: this.changeUrl, onBlur: this.checkUrl }),
+                            ' '
+                        ),
+                        _react2.default.createElement(
+                            'span',
+                            { className: this.state.errorUrl ? "visible" : "invisible" },
+                            'Please, fill the field. Value must be a valid url'
+                        ),
+                        ' ',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                            'label',
+                            null,
+                            'Quantity: ',
+                            _react2.default.createElement('input', { value: this.state.count, onChange: this.changeQuantity, onBlur: this.checkQuantity }),
+                            ' '
+                        ),
+                        _react2.default.createElement(
+                            'span',
+                            { className: this.state.errorQuantity ? "visible" : "invisible" },
+                            'Please, fill the field. Value must be a positive integer'
+                        ),
+                        ' ',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                            'button',
+                            { onClick: this.saveChanges, disabled: this.state.errorName || this.state.errorPrice || this.state.errorUrl || this.state.errorQuantity || !this.state.name || !this.state.price || !this.state.url || !this.state.count ? true : false },
+                            'Save'
+                        ),
+                        _react2.default.createElement(
+                            'button',
+                            { onClick: this.cancelChanges },
+                            'Cancel'
+                        )
+                    )
+                );
+            }
+        }
+    }]);
+
+    return Card;
+}(_react2.default.Component);
+
+Card.propTypes = {
+    workMode: _propTypes2.default.number.isRequired,
+    selectedProduct: _propTypes2.default.number,
+    selectedProductName: _propTypes2.default.string,
+    selectedProductPrice: _propTypes2.default.number,
+    selectedProductPhoto: _propTypes2.default.string,
+    selectedProductCount: _propTypes2.default.number,
+    cbCancelChanges: _propTypes2.default.func.isRequired,
+    cbSaveChanges: _propTypes2.default.func.isRequired
+};
+;
+
+exports.default = Card;
+
+/***/ }),
+/* 30 */
 /***/ (function(module, exports) {
 
-module.exports = [{"productName":"Набор ёлочных игрушек","code":1,"productCount":52,"productPrice":12.5,"productPhoto":"./images/1.jpeg"},{"productName":"Подвеска новогодняя","code":2,"productCount":12,"productPrice":6.8,"productPhoto":"./images/2.jpeg"},{"productName":"Фигура под ёлку 'Дед Мороз на лыжах'","code":3,"productCount":44,"productPrice":24.66,"productPhoto":"./images/3.jpeg"},{"productName":"Венок Зимнее волшебство","code":4,"productCount":17,"productPrice":34.48,"productPhoto":"./images/4.jpeg"},{"productName":"Елочная игрушка 'Олененок'","code":5,"productCount":35,"productPrice":10.2,"productPhoto":"./images/5.jpeg"},{"productName":"Подвеска новогодняя Совушка","code":6,"productCount":60,"productPrice":8.09,"productPhoto":"./images/6.jpeg"}]
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports) {
+
+module.exports = [{"productName":"Набор ёлочных игрушек","code":1,"productCount":52,"productPrice":12.5,"productPhoto":"https://27.ua/shop/shary-novogodnie/"},{"productName":"Подвеска новогодняя","code":2,"productCount":12,"productPrice":6.8,"productPhoto":"https://89.ua/shop/shary-novogodnie/"},{"productName":"Фигура под ёлку 'Дед Мороз на лыжах'","code":3,"productCount":44,"productPrice":24.66,"productPhoto":"https://01.ua/shop/shary-novogodnie/"},{"productName":"Венок Зимнее волшебство","code":4,"productCount":17,"productPrice":34.48,"productPhoto":"https://78.ua/shop/shary-novogodnie/"},{"productName":"Елочная игрушка 'Олененок'","code":5,"productCount":35,"productPrice":10.2,"productPhoto":"https://35.ua/shop/shary-novogodnie/"},{"productName":"Подвеска новогодняя Совушка","code":6,"productCount":60,"productPrice":8.09,"productPhoto":"https://12.ua/shop/shary-novogodnie/"}]
 
 /***/ })
 /******/ ]);
