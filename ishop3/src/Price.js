@@ -56,12 +56,13 @@ class Price extends React.Component {
     };
 
     cancelChanges = () => {
-        this.setState( {workMode: 1} )
+        this.setState( {workMode: this.state.selectedProduct? 1:0} )
     };
 
     saveChanges = (item, name, price, url, count) => {
         if(!item){
-            item = this.state.productsArr.length + 1;
+            let last = this.state.productsArr.length - 1; //выясняем code последнего продукта в массиве productsArr
+            item = this.state.productsArr[last].code + 1; //делаем code нового продукта на 1 больше
         }
         
         var newArr;

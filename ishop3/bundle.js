@@ -24294,10 +24294,11 @@ var Price = function (_React$Component) {
                 selectedProductPrice: price, selectedProductPhoto: url,
                 selectedProductCount: count, workMode: 2 });
         }, _this.cancelChanges = function () {
-            _this.setState({ workMode: 1 });
+            _this.setState({ workMode: _this.state.selectedProduct ? 1 : 0 });
         }, _this.saveChanges = function (item, name, price, url, count) {
             if (!item) {
-                item = _this.state.productsArr.length + 1;
+                var last = _this.state.productsArr.length - 1; //выясняем code последнего продукта в массиве productsArr
+                item = _this.state.productsArr[last].code + 1; //делаем code нового продукта на 1 больше
             }
 
             var newArr;
