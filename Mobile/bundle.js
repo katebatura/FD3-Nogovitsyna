@@ -24286,16 +24286,35 @@ var MobileCompany = function (_React$PureComponent) {
     return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = MobileCompany.__proto__ || Object.getPrototypeOf(MobileCompany)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
       name: _this.props.name,
       clients: _this.props.clients,
+      reservedClients: _this.props.clients,
       workMode: 0,
       selectedClient: 0,
-      new: false
+      new: false,
+      watchClients: 0 //1-active Clients, 2- blocked Clients, 0 - all Clients
     }, _this.setName1 = function () {
       _this.setState({ name: 'МТС' });
     }, _this.setName2 = function () {
       _this.setState({ name: 'Velcom' });
+    }, _this.setActiveClients = function () {
+      var activeClients = _this.state.reservedClients.filter(function (v) {
+        return v.balance >= 0;
+      });
+      _this.setState({ clients: activeClients, watchClients: 1 });
+    }, _this.setBlockedClients = function () {
+      var blockedClients = _this.state.reservedClients.filter(function (v) {
+        return v.balance < 0;
+      });
+      _this.setState({ clients: blockedClients, watchClients: 2 });
+    }, _this.setAllClients = function () {
+      var allClients = [].concat(_toConsumableArray(_this.state.reservedClients));
+      _this.setState({ clients: allClients, watchClients: 0 });
     }, _this.addNewClient = function () {
-      var newId = _this.state.clients[_this.state.clients.length - 1].id + 1;
-      _this.setState({ workMode: 2, selectedClient: newId, new: true });
+      if (_this.state.workMode != 2) {
+        var newId = _this.state.reservedClients[_this.state.reservedClients.length - 1].id + 1;
+        _this.setState({ workMode: 2, selectedClient: newId, new: true });
+      } else {
+        _this.setState({ workMode: 0 });
+      }
     }, _this.componentDidMount = function () {
       _events.events.addListener('saveClient', _this.saveClient);
       _events.events.addListener('cancelChanges', _this.cancelChanges);
@@ -24309,15 +24328,36 @@ var MobileCompany = function (_React$PureComponent) {
     }, _this.editClient = function (client) {
       _this.setState({ workMode: 1, selectedClient: client, new: false });
     }, _this.deleteClient = function (client) {
+      var newReservedClients = _this.state.reservedClients.filter(function (c) {
+        return c.id != client;
+      });
       var newClients = _this.state.clients.filter(function (c) {
         return c.id != client;
       });
-      _this.setState({ clients: newClients, workMode: _this.state.selectedClient == client ? 0 : _this.state.workMode });
+      _this.setState({ clients: newClients, reservedClients: newReservedClients,
+        workMode: _this.state.selectedClient == client ? 0 : _this.state.workMode });
     }, _this.saveClient = function (client) {
       _this.setState({ workMode: null });
       if (_this.state.new) {
-        var _newClients = [].concat(_toConsumableArray(_this.state.clients), [client]);
-        _this.setState({ clients: _newClients, new: false });
+        var newReservedClients = [].concat(_toConsumableArray(_this.state.reservedClients), [client]);
+        _this.setState({ reservedClients: newReservedClients, new: false });
+
+        switch (_this.state.watchClients) {
+          case 0:
+            _this.setState({ clients: newReservedClients });
+            break;
+          case 1:
+            if (client.balance >= 0) {
+              var _newClients = [].concat(_toConsumableArray(_this.state.clients), [client]);
+              _this.setState({ clients: _newClients });
+            }
+            break;
+          case 2:
+            if (client.balance < 0) {
+              var _newClients2 = [].concat(_toConsumableArray(_this.state.clients), [client]);
+              _this.setState({ clients: _newClients2 });
+            }
+        }
         return;
       }
       var changed = false;
@@ -24333,7 +24373,33 @@ var MobileCompany = function (_React$PureComponent) {
           changed = true;
         }
       });
-      if (changed) _this.setState({ clients: newClients });
+      switch (_this.state.watchClients) {
+        case 1:
+          newClients = newClients.filter(function (v) {
+            return v.balance >= 0;
+          });
+          break;
+        case 2:
+          newClients = newClients.filter(function (v) {
+            return v.balance < 0;
+          });
+          break;
+      }
+
+      if (changed) {
+        var _newReservedClients = [].concat(_toConsumableArray(_this.state.reservedClients)); // копия самого массива клиентов
+        _newReservedClients.forEach(function (c, i) {
+          if (c.id == client.id) {
+            var newClient = _extends({}, c); // копия хэша изменившегося клиента
+            newClient.fam = client.fam;
+            newClient.im = client.im;
+            newClient.otch = client.otch;
+            newClient.balance = client.balance;
+            _newReservedClients[i] = newClient;
+          }
+        });
+        _this.setState({ clients: newClients, reservedClients: _newReservedClients });
+      }
     }, _this.cancelChanges = function () {
       _this.setState({ workMode: null, selectedClient: null });
     }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -24362,9 +24428,9 @@ var MobileCompany = function (_React$PureComponent) {
           '\xBB '
         ),
         _react2.default.createElement('hr', null),
-        _react2.default.createElement('input', { type: 'button', value: '\u0412\u0441\u0435' }),
-        _react2.default.createElement('input', { type: 'button', value: '\u0410\u043A\u0442\u0438\u0432\u043D\u044B\u0435' }),
-        _react2.default.createElement('input', { type: 'button', value: '\u0417\u0430\u0431\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u044B\u0435' }),
+        _react2.default.createElement('input', { type: 'button', value: '\u0412\u0441\u0435', onClick: this.setAllClients, className: !this.state.watchClients ? "watchClients" : null }),
+        _react2.default.createElement('input', { type: 'button', value: '\u0410\u043A\u0442\u0438\u0432\u043D\u044B\u0435', onClick: this.setActiveClients, className: this.state.watchClients == 1 ? "watchClients" : null }),
+        _react2.default.createElement('input', { type: 'button', value: '\u0417\u0430\u0431\u043B\u043E\u043A\u0438\u0440\u043E\u0432\u0430\u043D\u043D\u044B\u0435', onClick: this.setBlockedClients, className: this.state.watchClients == 2 ? "watchClients" : null }),
         _react2.default.createElement('hr', null),
         _react2.default.createElement(
           'table',
@@ -24416,6 +24482,7 @@ var MobileCompany = function (_React$PureComponent) {
         ),
         _react2.default.createElement('input', { type: 'button', value: '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u043B\u0438\u0435\u043D\u0442\u0430', onClick: this.addNewClient }),
         this.state.workMode == 1 ? _react2.default.createElement(_card2.default, {
+          key: this.state.selectedClient,
           workMode: this.state.workMode,
           selectedClient: this.state.selectedClient,
           info: this.state.selectedClient ? this.state.clients.filter(function (client) {
@@ -24424,6 +24491,7 @@ var MobileCompany = function (_React$PureComponent) {
             }
           })[0] : null }) : null,
         this.state.workMode == 2 ? _react2.default.createElement(_card2.default, {
+          key: this.state.selectedClient,
           workMode: this.state.workMode,
           selectedClient: this.state.selectedClient,
           info: { id: this.state.selectedClient, key: this.state.selectedClient, fam: '',
@@ -25261,7 +25329,7 @@ var MobileClient = function (_React$PureComponent) {
           null,
           this.state.info.balance
         ),
-        this.state.info.balance > 0 ? _react2.default.createElement(
+        this.state.info.balance >= 0 ? _react2.default.createElement(
           'td',
           { className: 'active' },
           'Active'

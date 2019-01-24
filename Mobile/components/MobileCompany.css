@@ -21,3 +21,7 @@ th {
   border-top: 1px solid gray;
   padding: 10px;
 }
+
+.watchClients {
+  background-color: darkgray;
+}

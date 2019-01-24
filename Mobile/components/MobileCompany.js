@@ -26,9 +26,11 @@ class MobileCompany extends React.PureComponent {
   state = {
     name: this.props.name,
     clients: this.props.clients,
+    reservedClients: this.props.clients,
     workMode: 0,
     selectedClient: 0,
     new: false,
+    watchClients: 0, //1-active Clients, 2- blocked Clients, 0 - all Clients
   };
 
   setName1 = () => {
@@ -39,9 +41,28 @@ class MobileCompany extends React.PureComponent {
     this.setState( {name:'Velcom'} );
   };
 
+  setActiveClients = () => {
+    let activeClients = this.state.reservedClients.filter(v => {return v.balance >= 0});
+    this.setState( {clients: activeClients, watchClients: 1} );
+  };
+
+  setBlockedClients = () => {
+    let blockedClients = this.state.reservedClients.filter(v => {return v.balance < 0});
+    this.setState( {clients: blockedClients, watchClients: 2} );
+  };
+
+  setAllClients = () => {
+    let allClients = [...this.state.reservedClients];
+    this.setState( {clients: allClients, watchClients: 0} );
+  };
+
   addNewClient = () => {
-    let newId = this.state.clients[this.state.clients.length - 1].id + 1;
-    this.setState( {workMode: 2, selectedClient: newId, new: true} );
+    if(this.state.workMode != 2){
+      let newId = this.state.reservedClients[this.state.reservedClients.length - 1].id + 1;
+      this.setState( {workMode: 2, selectedClient: newId, new: true} );
+    } else {
+      this.setState( {workMode: 0} );
+    }    
   };
 
   componentDidMount = () => {
@@ -63,17 +84,38 @@ class MobileCompany extends React.PureComponent {
   };
 
   deleteClient = (client) => {
+    let newReservedClients = this.state.reservedClients.filter(c => {
+      return c.id != client
+    });
     let newClients = this.state.clients.filter(c => {
       return c.id != client
     });
-    this.setState( {clients: newClients, workMode: this.state.selectedClient == client ? 0 : this.state.workMode} );
+    this.setState( {clients: newClients, reservedClients: newReservedClients,
+       workMode: this.state.selectedClient == client ? 0 : this.state.workMode} );
   };
 
   saveClient = (client) => {
     this.setState( {workMode: null} );
     if(this.state.new) {
-      let newClients = [...this.state.clients, client];
-      this.setState( {clients: newClients, new: false} );
+      let newReservedClients = [...this.state.reservedClients, client];
+      this.setState( {reservedClients: newReservedClients, new: false} );
+
+      switch(this.state.watchClients) {
+        case 0:
+          this.setState( {clients: newReservedClients} )
+          break;
+        case 1:
+          if(client.balance >= 0){
+            let newClients = [...this.state.clients, client]
+            this.setState( {clients: newClients} )
+          }
+          break;
+        case 2:
+        if(client.balance < 0){
+          let newClients = [...this.state.clients, client]
+          this.setState( {clients: newClients} )
+        }
+      }
       return
     } 
     let changed = false;
@@ -89,8 +131,29 @@ class MobileCompany extends React.PureComponent {
         changed = true;
       }
     } );
-    if ( changed )
-      this.setState( {clients: newClients} );
+    switch(this.state.watchClients){
+      case 1:
+        newClients = newClients.filter(v => {return v.balance >= 0})
+        break;
+      case 2:
+        newClients = newClients.filter(v => {return v.balance < 0})
+        break;
+    }
+
+    if ( changed ){
+      let newReservedClients = [...this.state.reservedClients]; // копия самого массива клиентов
+      newReservedClients.forEach( (c,i) => {
+        if ( c.id == client.id ) {
+          let newClient = {...c}; // копия хэша изменившегося клиента
+          newClient.fam = client.fam;
+          newClient.im = client.im;
+          newClient.otch = client.otch;
+          newClient.balance = client.balance;
+          newReservedClients[i] = newClient;
+        }
+      } );
+      this.setState( {clients: newClients, reservedClients: newReservedClients,} );
+    }
   };
 
   cancelChanges = () => {
@@ -111,9 +174,9 @@ class MobileCompany extends React.PureComponent {
         <input type = "button" value = "Velcom" onClick = {this.setName2} />
         <div className = 'MobileCompanyName'> Компания &laquo;{this.state.name}&raquo; </div>
         <hr />
-        <input type = "button" value = "Все"  />
-        <input type = "button" value = "Активные" />
-        <input type = "button" value = "Заблокированные" />
+        <input type = "button" value = "Все" onClick = {this.setAllClients} className = {!this.state.watchClients ? "watchClients" : null} />
+        <input type = "button" value = "Активные" onClick = {this.setActiveClients} className = {this.state.watchClients == 1 ? "watchClients" : null} />
+        <input type = "button" value = "Заблокированные" onClick = {this.setBlockedClients} className = {this.state.watchClients == 2 ? "watchClients" : null} />
         <hr />
         <table className = 'MobileCompany'>
           <tbody>
@@ -133,6 +196,7 @@ class MobileCompany extends React.PureComponent {
         {
           this.state.workMode == 1 ? 
           <Card
+          key = {this.state.selectedClient}
           workMode = {this.state.workMode}
           selectedClient = {this.state.selectedClient}
           info = {this.state.selectedClient ? this.state.clients.filter( client => {
@@ -145,6 +209,7 @@ class MobileCompany extends React.PureComponent {
         {
           this.state.workMode == 2 ? 
           <Card
+          key = {this.state.selectedClient}
           workMode = {this.state.workMode}
           selectedClient = {this.state.selectedClient}
           info = { {id: this.state.selectedClient, key: this.state.selectedClient, fam: '',

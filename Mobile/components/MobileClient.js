@@ -44,7 +44,7 @@ class MobileClient extends React.PureComponent {
         <td>{this.state.info.otch}</td>
         <td>{this.state.info.balance}</td>
         {
-          (this.state.info.balance > 0)?
+          (this.state.info.balance >= 0)?
           <td className = "active">Active</td>:
           <td className = "blocked">Blocked</td>
         }
