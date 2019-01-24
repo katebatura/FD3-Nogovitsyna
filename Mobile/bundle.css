@@ -1,0 +1,42 @@
+td {
+  border-top: 1px solid gray;
+  padding: 10px;
+}
+
+.active {
+  background-color: green;
+}
+.blocked {
+  background-color: red;
+}
+.visible {
+    display: inline;
+    color: red;
+}
+.invisible {
+    display: none;
+}.MobileCompany
+{
+  border: 1px solid gray;
+  border-collapse: collapse;
+  width: 1000px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 15px;
+  text-align: center;
+  vertical-align: center;
+  padding: 10px;
+  margin: 20px 0;
+  
+}
+
+.MobileCompanyName
+{
+  font-weight: bold;
+}
+
+th {
+  border-top: 1px solid gray;
+  padding: 10px;
+}
+
+/*# sourceMappingURL=bundle.css.map*/

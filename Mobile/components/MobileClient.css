@@ -1,0 +1,11 @@
+﻿td {
+  border-top: 1px solid gray;
+  padding: 10px;
+}
+
+.active {
+  background-color: green;
+}
+.blocked {
+  background-color: red;
+}
