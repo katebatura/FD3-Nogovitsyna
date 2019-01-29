@@ -21,7 +21,7 @@ test('работа setActiveClients', () => {
 
     //проверяем, что ссылки на самих активных клиентов не изменились
     let client = ChangeClients.setActiveClients(clientsArr)[0];
-    expect(client).toEqual(clientsArr.find(v => v.id === client.id));
+    expect(client).toBe(clientsArr.find(v => v.id === client.id));
 });
 
 test('работа saveEditClient', () => {
