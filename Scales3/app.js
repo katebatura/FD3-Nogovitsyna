@@ -11,11 +11,25 @@ var Scales = /** @class */ (function () {
     };
     ;
     Scales.prototype.getNameList = function () {
-        return this.storage.getItems();
+        var nameList = [];
+        var count = this.storage.getCount();
+        for (var i = 0; i < count; i++) {
+            var item = this.storage.getItem(i);
+            nameList.push(item.name);
+        }
+        ;
+        return nameList;
     };
     ;
     Scales.prototype.getSumScale = function () {
-        return this.storage.getCount();
+        var sum = 0;
+        var count = this.storage.getCount();
+        for (var i = 0; i < count; i++) {
+            var item = this.storage.getItem(i);
+            sum += item.scale;
+        }
+        ;
+        return sum;
     };
     ;
     return Scales;
@@ -35,19 +49,8 @@ var ScalesStorageEngineArray = /** @class */ (function () {
     };
     ;
     ScalesStorageEngineArray.prototype.getCount = function () {
-        var sum = 0;
-        this.nameList.forEach(function (v) {
-            sum += v.getScale();
-        });
+        var sum = this.nameList.length;
         return sum;
-    };
-    ;
-    ScalesStorageEngineArray.prototype.getItems = function () {
-        var list = [];
-        this.nameList.forEach(function (v) {
-            list.push(v.getName());
-        });
-        return list;
     };
     ;
     return ScalesStorageEngineArray;
@@ -68,22 +71,8 @@ var ScalesStorageEngineLocalStorage = /** @class */ (function () {
     };
     ;
     ScalesStorageEngineLocalStorage.prototype.getCount = function () {
-        var sum = 0;
-        for (var i = 0; i < localStorage.length; i++) {
-            var k = localStorage.key(i);
-            sum += +localStorage.getItem(k);
-        }
-        ;
+        var sum = localStorage.length;
         return sum;
-    };
-    ;
-    ScalesStorageEngineLocalStorage.prototype.getItems = function () {
-        var list = [];
-        for (var i = 0; i < localStorage.length; i++) {
-            list.push(localStorage.key(i));
-        }
-        ;
-        return list;
     };
     ;
     return ScalesStorageEngineLocalStorage;

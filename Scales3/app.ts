@@ -2,7 +2,6 @@ interface IStorageEngine {
     addItem(item:Product):void;
     getItem(index:number):Product;
     getCount():number;
-    getItems():string[];
 };
 
 class Scales<StorageEngine extends IStorageEngine> {
@@ -21,11 +20,28 @@ class Scales<StorageEngine extends IStorageEngine> {
     };
 
     public getNameList():string[] {
-       return this.storage.getItems();
+        let nameList:string[] = [];
+        let count = this.storage.getCount();
+
+        for(let i = 0; i < count; i++) {
+            let item:Product = this.storage.getItem(i);
+            nameList.push(item.name);
+        };
+
+        return nameList;
     };
 
     public getSumScale():number {
-        return this.storage.getCount();        
+        
+        let sum:number = 0;
+        let count = this.storage.getCount();
+
+        for(let i = 0; i < count; i++) {
+            let item:Product = this.storage.getItem(i);
+            sum += item.scale;
+        };
+
+        return sum;     
     };
  
     
@@ -49,19 +65,8 @@ class ScalesStorageEngineArray implements IStorageEngine {
     };
 
     getCount():number {
-        let sum:number = 0;
-        this.nameList.forEach(v => {
-           sum += v.getScale();
-        });
+        let sum:number = this.nameList.length;        
         return sum;
-    };
-
-    getItems():string[] {
-        let list:string[] = [];
-        this.nameList.forEach(v => {
-           list.push(v.getName());
-        });
-        return list;
     };
 
 };
@@ -82,24 +87,11 @@ class ScalesStorageEngineLocalStorage  implements IStorageEngine {
     };
     
     getCount():number {
-        let sum:number = 0;
-        for(let i = 0; i < localStorage.length; i++) {
-            let k = localStorage.key(i);
-            sum += +localStorage.getItem(k)
-        };
+        let sum:number = localStorage.length;
 
         return sum;
     };
     
-    getItems():string[] {
-        let list:string[] = [];
-        for(let i = 0; i < localStorage.length; i++) {
-            list.push(localStorage.key(i));
-        };
-
-        return list;
-    };
-
 };
 
 
