@@ -7,8 +7,8 @@ interface IScalable {
 
 class Apple implements IScalable {
     
-    name:string;
-    scale:number;
+    private name:string;
+    private scale:number;
 
     constructor(_name:string, _scale:number) {
         this.name = 'Apple ' + _name; 
@@ -25,8 +25,8 @@ class Apple implements IScalable {
 
 class Tomato implements IScalable {
     
-    name:string;
-    scale:number;
+    private name:string;
+    private scale:number;
 
     constructor(_name:string, _scale:number) {
         this.name = 'Tomato ' + _name; 
@@ -44,7 +44,8 @@ class Tomato implements IScalable {
 
 
 class Scales {
-    nameList:IScalable[];
+    
+    private nameList:IScalable[];
 
     constructor() {
         this.nameList = [];
