@@ -1,11 +1,13 @@
 ;
+function uniFactory(classRef) {
+    return new classRef();
+}
+;
 var Scales = /** @class */ (function () {
-    function Scales() {
+    function Scales(se) {
+        this.storage = uniFactory(se);
     }
     ;
-    Scales.prototype.create = function (_storage) {
-        this.storage = _storage;
-    };
     Scales.prototype.add = function (item) {
         this.storage.addItem(item);
     };
@@ -97,16 +99,14 @@ var Product = /** @class */ (function () {
 var prod1 = new Product('prod1', 100);
 var prod2 = new Product('prod2', 200);
 var prod3 = new Product('prod3', 300);
-var storageEngineArray = new Scales();
-storageEngineArray.create(new ScalesStorageEngineArray());
+var storageEngineArray = new Scales(ScalesStorageEngineArray);
 storageEngineArray.add(prod1);
 storageEngineArray.add(prod2);
 storageEngineArray.add(prod3);
 console.log('storageEngineArray:');
 console.log(storageEngineArray.getNameList());
 console.log(storageEngineArray.getSumScale());
-var storageEngineLocalStorage = new Scales();
-storageEngineLocalStorage.create(new ScalesStorageEngineArray());
+var storageEngineLocalStorage = new Scales(ScalesStorageEngineArray);
 storageEngineLocalStorage.add(prod1);
 storageEngineLocalStorage.add(prod2);
 storageEngineLocalStorage.add(prod3);
