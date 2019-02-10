@@ -15,7 +15,7 @@ class Scales<StorageEngine extends IStorageEngine> {
     private storage:StorageEngine;
 
     constructor() {
-        this.storage = uniFactory<StorageEngine>(StorageEngine);
+        this.storage = uniFactory(StorageEngine);
     };
 
 
