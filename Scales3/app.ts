@@ -4,16 +4,13 @@ interface IStorageEngine {
     getCount():number;
 };
 
-class Scales<StorageEngine extends IStorageEngine> {
+class Scales<objtype extends IStorageEngine> {
 
-    private storage:StorageEngine;
+    private storage:objtype;
 
-    constructor() {
+    constructor(classRef: { new (): objtype; }) {
+        this.storage =  new classRef();
     };
-
-    public create(_storage:StorageEngine) {
-        this.storage = _storage;
-     }
 
     public add(item:Product):void {
         this.storage.addItem(item);
@@ -119,8 +116,7 @@ let prod1:Product = new Product('prod1', 100);
 let prod2:Product = new Product('prod2', 200);
 let prod3:Product = new Product('prod3', 300);
 
-let storageEngineArray = new Scales<ScalesStorageEngineArray>();
-storageEngineArray.create(new ScalesStorageEngineArray());
+let storageEngineArray = new Scales<ScalesStorageEngineArray>(ScalesStorageEngineArray);
 
 
 storageEngineArray.add(prod1);
@@ -132,8 +128,7 @@ console.log(storageEngineArray.getNameList());
 console.log(storageEngineArray.getSumScale());
 
 
-let storageEngineLocalStorage = new Scales<ScalesStorageEngineLocalStorage>();
-storageEngineLocalStorage.create(new ScalesStorageEngineArray());
+let storageEngineLocalStorage = new Scales<ScalesStorageEngineLocalStorage>(ScalesStorageEngineArray);
 
 
 storageEngineLocalStorage.add(prod1);
