@@ -14,8 +14,8 @@ class Scales<StorageEngine extends IStorageEngine> {
 
     private storage:StorageEngine;
 
-    constructor(se:any) {
-        this.storage=uniFactory(se);
+    constructor() {
+        this.storage = uniFactory<StorageEngine>(StorageEngine);
     };
 
 
@@ -123,7 +123,7 @@ let prod1:Product = new Product('prod1', 100);
 let prod2:Product = new Product('prod2', 200);
 let prod3:Product = new Product('prod3', 300);
 
-let storageEngineArray = new Scales<ScalesStorageEngineArray>(ScalesStorageEngineArray);
+let storageEngineArray = new Scales<ScalesStorageEngineArray>();
 
 
 storageEngineArray.add(prod1);
@@ -135,7 +135,7 @@ console.log(storageEngineArray.getNameList());
 console.log(storageEngineArray.getSumScale());
 
 
-let storageEngineLocalStorage = new Scales<ScalesStorageEngineLocalStorage>(ScalesStorageEngineArray);
+let storageEngineLocalStorage = new Scales<ScalesStorageEngineLocalStorage>();
 
 
 storageEngineLocalStorage.add(prod1);
