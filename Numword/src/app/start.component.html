@@ -1,0 +1,10 @@
+<div class='Start'>
+
+  Введите количество: <input #apples type="text" [(ngModel)]="startApple">
+  <br>
+
+  <div>
+    У вас {{apples.value || 0 |numword: 'яблоко':'яблока':'яблок'}}
+  </div>
+
+</div>
