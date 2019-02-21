@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   moduleId: module.id,
@@ -22,6 +22,9 @@ export class SpriteComponent {
 
   @Input("height")
   private height:number;
+
+  @Output("clicked")
+  private clicked:EventEmitter<boolean>=new EventEmitter<boolean>();
   
   getUrl():string {
     return 'url(' + this.url + ')';
@@ -37,6 +40,10 @@ export class SpriteComponent {
   
   getHeight():number {
     return this.height;
+  }
+
+  showNewCard():void {
+    this.clicked.emit();
   }
 
 }
