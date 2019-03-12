@@ -8,7 +8,8 @@ export class TicketsService {
   private seatsObs$:Observable<Array<boolean>>;
 
   constructor() {   
-    this.seatsObs$ = new Observable<Array<boolean>>(observer => {observer.next(this.seats)});
+    //this.seatsObs$ = new Observable<Array<boolean>>(observer => {observer.next(this.seats)});
+    this.seatsObs$ = new Observable<Array<boolean>>();
   }
 
   getSeats():Observable<Array<boolean>> {
