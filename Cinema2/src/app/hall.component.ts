@@ -18,6 +18,7 @@ export class HallComponent {
 
     
   makeNewSeats(seats:Array<boolean>):void {  
+    console.log(seats)
     this.newSeats = seats.map(s => {
       if(s) {
         return 'green';

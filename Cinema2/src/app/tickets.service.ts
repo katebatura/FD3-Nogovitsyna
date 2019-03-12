@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs/observable';
-import { from } from 'rxjs/observable/from';
 
 @Injectable()
 export class TicketsService {
@@ -8,13 +7,11 @@ export class TicketsService {
   private seats:Array<boolean> = [true,true,true,true,true,true,true,true,true,true,true,true];
   private seatsObs$:Observable<Array<boolean>>;
 
-  constructor() {
-    //this.seatsObs$ = new Observable<Array<boolean>>();
-    this.seatsObs$ = from([this.seats]);
+  constructor() {   
+    this.seatsObs$ = new Observable<Array<boolean>>(observer => {observer.next(this.seats)});
   }
 
   getSeats():Observable<Array<boolean>> {
-    this.seatsObs$ = from([this.seats]);
     console.log(this.seatsObs$);
     return this.seatsObs$;
   }
@@ -47,8 +44,6 @@ export class TicketsService {
     };
 
     if(order.length) order.forEach(s => this.seats[s -1] = false);
-
-    this.getSeats();
 
     return order;
   }
