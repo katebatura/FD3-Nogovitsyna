@@ -13,8 +13,8 @@ export class HallComponent {
   }
 
     
-  showSeats():Array<boolean> {
-    return this.tickets.getSeats();
+  showSeats():number {
+    return this.tickets.getVacancy();    
   }
 
 }
