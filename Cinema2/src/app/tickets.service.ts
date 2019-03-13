@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-//import { Observable } from 'rxjs/observable';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
@@ -9,12 +8,11 @@ export class TicketsService {
   private seatsObs$:Subject<Array<boolean>>;
 
   constructor() {   
-    //this.seatsObs$ = new Observable<Array<boolean>>();
     this.seatsObs$ = new Subject<Array<boolean>>();
   }
 
   getSeats():Subject<Array<boolean>> {
-    //this.seatsObs$ = Observable.create(observer => {observer.next(this.seats)});
+    this.seatsObs$.next(this.seats);
     return this.seatsObs$;
   }
 
@@ -47,7 +45,7 @@ export class TicketsService {
 
     if(order.length) order.forEach(s => this.seats[s -1] = false);
     
-    //this.getSeats();
+    this.getSeats();
 
     return order;
   }
