@@ -10,6 +10,7 @@ import { TicketsService } from './tickets.service';
 export class CashComponent {
   
     constructor(private tickets:TicketsService) {
+      this.tickets.getSeats().next(this.tickets.getTotal());
     }
 
     makeOrder(s:string) {
@@ -25,6 +26,8 @@ export class CashComponent {
         for(let i = 0; i < l; i++) {
           seats += order[i] + '; '
         }        
-        console.log('ваши места: ' + seats)
+        console.log('ваши места: ' + seats);
+        
+        this.tickets.getSeats().next(this.tickets.getTotal());
     }
 }

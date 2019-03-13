@@ -1,19 +1,20 @@
 import { Injectable } from "@angular/core";
-import { Observable } from 'rxjs/observable';
+//import { Observable } from 'rxjs/observable';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class TicketsService {
 
   private seats:Array<boolean> = [true,true,true,true,true,true,true,true,true,true,true,true];
-  private seatsObs$:Observable<Array<boolean>>;
+  private seatsObs$:Subject<Array<boolean>>;
 
   constructor() {   
-    //this.seatsObs$ = new Observable<Array<boolean>>(observer => {observer.next(this.seats)});
-    this.seatsObs$ = new Observable<Array<boolean>>();
+    //this.seatsObs$ = new Observable<Array<boolean>>();
+    this.seatsObs$ = new Subject<Array<boolean>>();
   }
 
-  getSeats():Observable<Array<boolean>> {
-    console.log(this.seatsObs$);
+  getSeats():Subject<Array<boolean>> {
+    //this.seatsObs$ = Observable.create(observer => {observer.next(this.seats)});
     return this.seatsObs$;
   }
 
@@ -22,8 +23,8 @@ export class TicketsService {
     return vacancy.length;
   }
 
-  getTotal():number {
-    return this.seats.length;
+  getTotal():Array<boolean> {
+    return this.seats;
   }
 
   orderTicket(qty:number):Array<number> {
@@ -45,6 +46,8 @@ export class TicketsService {
     };
 
     if(order.length) order.forEach(s => this.seats[s -1] = false);
+    
+    //this.getSeats();
 
     return order;
   }
