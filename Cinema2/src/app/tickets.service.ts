@@ -45,7 +45,7 @@ export class TicketsService {
 
     if(order.length) order.forEach(s => this.seats[s -1] = false);
     
-    this.getSeats();
+    this.seatsObs$.next(this.seats);
 
     return order;
   }
